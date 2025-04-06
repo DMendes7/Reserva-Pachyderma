@@ -196,16 +196,11 @@ body {
     margin: 0;
   }
   
-  .resultado {
-    margin-top: 30px;
-    text-align: left;
-    max-width: 400px;
-    margin-inline: auto;
-  }
-  
   .resultado ul {
     list-style: none;
     padding: 0;
+    margin: 0 auto;
+    max-width: 500px;
   }
   
   .resultado li {
@@ -213,6 +208,7 @@ body {
     border-radius: 6px;
     margin-bottom: 8px;
     font-weight: bold;
+    text-align: left;
   }
   
   .resultado li.ok {
@@ -228,6 +224,49 @@ body {
   .resultado li.alto {
     background-color: #702e2e;
     color: #f7baba;
+  }
+   
+  
+  #avaliacao-elefante {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 20px;
+  }
+  
+  .botoes-analise {
+    margin-top: 30px;
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  
+  .botoes-analise button {
+    background-color: #FFD700;
+    border: none;
+    color: #0f3d21;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .botoes-analise button:hover {
+    background-color: #e6be00;
+  }
+
+  #grafico-elefante {
+    max-width: 300px;
+    margin: 0 auto;
+    display: block;
+  }
+
+  canvas {
+    max-width: 300px;
+    height: auto !important;
+    display: block;
+    margin: 0 auto;
   }
   
   

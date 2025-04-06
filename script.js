@@ -119,6 +119,12 @@ function selecionarAnimal(animal) {
       alface: parseFloat(document.getElementById('alface').value) || 0,
     };
   
+    const totais = {
+      frutas: valores.manga + valores.melancia + valores.banana,
+      verduras: valores.capim + valores.couve + valores.alface,
+      racao: valores.racao
+    };
+  
     const ideais = {
       racao: 49.5,
       manga: 38.72,
@@ -129,32 +135,84 @@ function selecionarAnimal(animal) {
       alface: 73.92
     };
   
-    let resultadoHTML = `<h3>Resultado da Avaliação:</h3><ul>`;
+    const resultadoContainer = document.getElementById('formulario-alimentacao');
+    resultadoContainer.innerHTML = `
+      <h2>Resultado da Avaliação: Hipopótamo</h2>
+      <div class="resultado">
+        <ul id="avaliacao-hipopotamo"></ul>
+      </div>
+      <canvas id="grafico-hipopotamo" width="300" height="300"></canvas>
+      <div class="botoes-analise">
+        <button onclick="voltarParaSelecao()">🔙 Voltar</button>
+        <button onclick="refazerAnaliseHipopotamo()">✏️ Alterar Valores</button>
+      </div>
+    `;
+  
+    const ul = document.getElementById('avaliacao-hipopotamo');
   
     for (let item in valores) {
       const consumido = valores[item];
       const ideal = ideais[item];
       const diff = consumido - ideal;
+  
       let classe = '';
       let mensagem = '';
   
       if (diff >= -5 && diff <= 5) {
         classe = 'ok';
-        mensagem = '✔ Quantidade ideal';
+        mensagem = `✔ Quantidade ideal (${consumido.toFixed(2)} kg)`;
       } else if (diff < -5) {
         classe = 'baixo';
-        mensagem = `⚠ Está comendo pouco (-${Math.abs(diff.toFixed(2))} kg)`;
+        mensagem = `⚠ Está comendo pouco (${Math.abs(diff.toFixed(2))} kg a menos - ${consumido.toFixed(2)} kg)`;
       } else {
         classe = 'alto';
-        mensagem = `⛔ Está comendo demais (+${diff.toFixed(2)} kg)`;
+        mensagem = `⛔ Está comendo demais (${diff.toFixed(2)} kg a mais - ${consumido.toFixed(2)} kg)`;
       }
   
-      resultadoHTML += `<li class="${classe}">${formatarNome(item)}: ${mensagem}</li>`;
+      const li = document.createElement('li');
+      li.className = classe;
+      li.textContent = `${formatarNome(item)}: ${mensagem}`;
+      ul.appendChild(li);
     }
   
-    resultadoHTML += `</ul>`;
-    document.getElementById('resultado').innerHTML = resultadoHTML;
+    gerarGraficoHipopotamo(totais);
   }
+
+  function refazerAnaliseHipopotamo() {
+    selecionarAnimal('hipopotamo');
+  }
+    
+  function gerarGraficoHipopotamo(valores) {
+    const ctx = document.getElementById('grafico-hipopotamo').getContext('2d');
+    new Chart(ctx, {
+      type: 'pie',
+      data: {
+        labels: ['Frutas', 'Verduras', 'Ração'],
+        datasets: [{
+          data: [
+            valores.frutas,
+            valores.verduras,
+            valores.racao
+          ],
+          backgroundColor: ['#FFB347', '#4CAF50', '#09324B'],
+          borderColor: '#0f3d21',
+          borderWidth: 2
+        }]
+      },
+      options: {
+        plugins: {
+          legend: {
+            labels: {
+              color: '#FFD700',
+              font: {
+                size: 14
+              }
+            }
+          }
+        }
+      }
+    });
+  }  
   
   function formatarNome(item) {
     switch(item) {
@@ -182,6 +240,13 @@ function selecionarAnimal(animal) {
       feno: parseFloat(document.getElementById('feno').value) || 0,
     };
   
+    const totais = {
+      frutas: valores.manga + valores.melancia + valores.banana,
+      leguminosas: valores.feijao,
+      gramineas: valores.capim + valores.feno,
+      racao: valores.racao,
+    };
+  
     const ideais = {
       racao: 16,
       manga: 13.33,
@@ -192,31 +257,91 @@ function selecionarAnimal(animal) {
       feno: 60
     };
   
-    let resultadoHTML = `<h3>Resultado da Avaliação:</h3><ul>`;
+    const resultadoContainer = document.getElementById('formulario-alimentacao');
+    resultadoContainer.innerHTML = `
+    <h2>Resultado da Avaliação: Elefante</h2>
+    <div class="resultado">
+        <ul id="avaliacao-elefante"></ul>
+    </div>
+    <canvas id="grafico-elefante"></canvas>
+    <div class="botoes-analise">
+        <button onclick="voltarParaSelecao()">🔙 Voltar</button>
+        <button onclick="refazerAnaliseElefante()">✏️ Alterar Valores</button>
+    </div>
+    `;
+  
+    const ul = document.getElementById('avaliacao-elefante');
   
     for (let item in valores) {
       const consumido = valores[item];
       const ideal = ideais[item];
       const diff = consumido - ideal;
+  
       let classe = '';
       let mensagem = '';
   
       if (diff >= -5 && diff <= 5) {
         classe = 'ok';
-        mensagem = '✔ Quantidade ideal';
+        mensagem = `✔ Quantidade ideal (${consumido.toFixed(2)} kg)`;
       } else if (diff < -5) {
         classe = 'baixo';
-        mensagem = `⚠ Está comendo pouco (-${Math.abs(diff.toFixed(2))} kg)`;
+        mensagem = `⚠ Está comendo pouco (${Math.abs(diff.toFixed(2))} kg a menos - ${consumido.toFixed(2)} kg)`;
       } else {
         classe = 'alto';
-        mensagem = `⛔ Está comendo demais (+${diff.toFixed(2)} kg)`;
+        mensagem = `⛔ Está comendo demais (${diff.toFixed(2)} kg a mais - ${consumido.toFixed(2)} kg)`;
       }
   
-      resultadoHTML += `<li class="${classe}">${formatarNome(item)}: ${mensagem}</li>`;
+      const li = document.createElement('li');
+      li.className = classe;
+      li.textContent = `${formatarNome(item)}: ${mensagem}`;
+      ul.appendChild(li);
     }
   
-    resultadoHTML += `</ul>`;
-    document.getElementById('resultado').innerHTML = resultadoHTML;
+    requestAnimationFrame(() => {
+        const canvas = document.getElementById('grafico-elefante');
+        if (canvas) {
+          gerarGraficoElefante(totais);
+        } else {
+          console.warn("Canvas do elefante não encontrado!");
+        }
+      });      
+      
+  }  
+  
+  function refazerAnaliseElefante() {
+    selecionarAnimal('elefante');
   }
   
+  function gerarGraficoElefante(valores) {
+    const ctx = document.getElementById('grafico-elefante')?.getContext('2d');
+    new Chart(ctx, {
+      type: 'pie',
+      data: {
+        labels: ['Frutas', 'Leguminosas', 'Gramíneas', 'Ração'],
+        datasets: [{
+          data: [
+            valores.frutas,
+            valores.leguminosas,
+            valores.gramineas,
+            valores.racao
+          ],
+          backgroundColor: ['#FFB347', '#D97D54', '#1d5a30', '#09324B'],
+          borderColor: '#0f3d21',
+          borderWidth: 2
+        }]
+      },
+      options: {
+        plugins: {
+          legend: {
+            labels: {
+              color: '#FFD700',
+              font: {
+                size: 14
+              }
+            }
+          }
+        }
+      }
+    });
+  }  
   
