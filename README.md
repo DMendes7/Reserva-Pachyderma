@@ -1,6 +1,6 @@
 
 <p align="center">
-  <img src="img/logo.jpg" alt="Logo Reserva Pachyderma" width="300">
+  <img src="img/logo.png" alt="Logo Reserva Pachyderma" width="300">
 </p>
 
 <h1 align="center">🌿 Reserva Pachyderma</h1>
