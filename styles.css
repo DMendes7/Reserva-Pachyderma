@@ -63,17 +63,22 @@ body {
     background-color: rgba(255, 215, 0, 0.1);
   }
   
-  /* Efeito de transição */
-  .conteudo-animal {
-    animation: fadeIn 0.8s ease forwards;
+  .fade-out {
     opacity: 0;
+    transition: opacity 0.5s ease;
+    pointer-events: none;
+  }
+  
+  .fade-in {
+    opacity: 0;
+    animation: fadeIn 0.5s ease forwards;
   }
   
   @keyframes fadeIn {
     to {
       opacity: 1;
     }
-  }
+  }  
   
   .animal-selecionado {
     position: absolute;
@@ -85,22 +90,19 @@ body {
     max-width: 220px;
   }  
   
-  
-  .animal-selection.fade-out {
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.5s ease;
-  }
-
   #topo-logo {
-    transition: opacity 0.5s ease;
+    text-align: center;
+    margin-bottom: 20px;
+    transition: all 0.6s ease;
   }
   
-  #topo-logo.escondido {
+  #topo-logo.hidden {
     opacity: 0;
+    transform: translateY(-50px);
     pointer-events: none;
-    display: none;
-  }
+    height: 0;
+    overflow: hidden;
+  }  
   
   #formulario-alimentacao {
     display: flex;
@@ -196,11 +198,36 @@ body {
     margin: 0;
   }
   
+  .resultado-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1rem;
+    gap: 1rem;
+  }
+  
+  .resultado-titulo {
+    font-size: 1.6rem;
+    font-weight: bold;
+    color: #FFD700;
+    text-align: center;
+  }
+  
+  .resultado-conteudo {
+    display: flex;
+    flex-direction: row;
+    gap: 3rem;
+    justify-content: center;
+    flex-wrap: wrap; /* para responsividade */
+    width: 100%;
+    max-width: 1000px;
+  }
+  
   .resultado ul {
     list-style: none;
     padding: 0;
-    margin: 0 auto;
-    max-width: 500px;
+    margin: 0;
+    max-width: 400px;
   }
   
   .resultado li {
@@ -211,21 +238,108 @@ body {
     text-align: left;
   }
   
+  /* Mantém estilos por classe */
   .resultado li.ok {
     background-color: #2e7031;
     color: #baf7ba;
   }
-  
   .resultado li.baixo {
     background-color: #705c2e;
     color: #fff3ba;
   }
-  
   .resultado li.alto {
     background-color: #702e2e;
     color: #f7baba;
   }
-   
+  
+  /* Adiciona animação */
+  .resultado-item {
+    opacity: 0;
+    animation: slideInUp 0.6s ease forwards;
+  }
+  
+  @keyframes slideInUp {
+    from {
+      transform: translateY(30px);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+  
+  .grafico-area {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    animation: zoomIn 0.8s ease forwards;
+    animation-delay: 0.5s;
+  }
+  
+  @keyframes zoomIn {
+    from {
+      transform: scale(0.8);
+      opacity: 0;
+    }
+    to {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+  
+  .botoes-analise {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 20px;
+    opacity: 0;
+    animation: fadeIn 0.8s ease forwards;
+    animation-delay: 1s;
+  }
+  
+  @keyframes fadeIn {
+    to {
+      opacity: 1;
+    }
+  }  
+  
+  #grafico-elefante {
+    max-width: 400px;
+    margin-top: 20px;
+    opacity: 0;
+    animation: zoomIn 0.8s ease forwards;
+    animation-delay: 0.5s;
+  }
+  
+  @keyframes zoomIn {
+    from {
+      transform: scale(0.8);
+      opacity: 0;
+    }
+    to {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+  
+  .botoes-analise {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 20px;
+    opacity: 0;
+    animation: fadeIn 0.8s ease forwards;
+    animation-delay: 1s;
+  }
+  
+  @keyframes fadeIn {
+    to {
+      opacity: 1;
+    }
+  }
+  
   
   #avaliacao-elefante {
     list-style: none;
@@ -269,6 +383,57 @@ body {
     margin: 0 auto;
   }
   
+  .hidden {
+    display: none !important;
+  }
+  
+  @keyframes slideFadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(-30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  .slide-fade-in {
+    animation: slideFadeIn 0.6s ease forwards;
+    opacity: 0; /* início */
+  }
+  
+  @keyframes slideInRight {
+    from {
+      opacity: 0;
+      transform: translateX(40px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+  
+  .grupo-animado {
+    opacity: 0;
+    animation: slideInRight 0.6s ease forwards;
+  }
+  
+  @keyframes slideInLeft {
+    from {
+      opacity: 0;
+      transform: translateX(-40px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+  
+  .animal-animado {
+    opacity: 0;
+    animation: slideInLeft 0.5s ease forwards;
+  }
   
   
   

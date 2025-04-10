@@ -8,23 +8,25 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-    <header id="topo-logo">
-        <img src="img/logo.png" alt="Logo Reserva Pachyderma" class="logo">
-      </header>
-      
-    <button id="voltar-btn" class="escondido" onclick="voltarParaSelecao()">⟵ Voltar</button>
+  <header id="topo-logo">
+    <img src="img/logo.png" alt="Logo Reserva Pachyderma" class="logo">
+  </header>
   
-    <main>
-        <div class="animal-selection">
-            <img id="elefante-img" src="img/elefante.png" alt="elefante" class="animal-icon" onclick="selecionarAnimal('elefante')">
-            <img id="hipopotamo-img" src="img/hipopotamo.png" alt="hipopotamo" class="animal-icon" onclick="selecionarAnimal('hipopotamo')">
-        </div>          
-  
-      <div id="formulario-alimentacao" class="escondido conteudo-animal">
-        <!-- Conteúdo gerado dinamicamente -->
-      </div>
-    </main>
-  
-    <script src="script.js"></script>
-  </body>  
+  <button id="voltar-btn" class="hidden" onclick="voltarParaSelecao()">⟵ Voltar</button>
+
+  <main>
+    <!-- Seleção dos animais -->
+    <div id="selecao-animais" class="animal-selection">
+      <img id="elefante-img" src="img/elefante.png" alt="elefante" class="animal-icon" onclick="selecionarAnimal('elefante')">
+      <img id="hipopotamo-img" src="img/hipopotamo.png" alt="hipopotamo" class="animal-icon" onclick="selecionarAnimal('hipopotamo')">
+    </div>          
+
+    <!-- Formulário de alimentação (aparece após seleção) -->
+    <div id="formulario-alimentacao" class="hidden">
+      <!-- Conteúdo gerado dinamicamente via JS -->
+    </div>
+  </main>
+
+  <script src="script.js"></script>
+</body>  
 </html>

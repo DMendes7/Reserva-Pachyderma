@@ -1,182 +1,230 @@
-function selecionarAnimal(animal) {
-    const selecao = document.querySelector('.animal-selection');
-    const btnVoltar = document.getElementById('voltar-btn');
-    const container = document.getElementById('formulario-alimentacao');
-    const topo = document.getElementById('topo-logo');
-  
-    topo.classList.add('escondido');
-  
-    const elefanteImg = document.getElementById('elefante-img');
-    const hipopotamoImg = document.getElementById('hipopotamo-img');
-  
-    if (animal === 'elefante') {
-      elefanteImg.classList.add('animal-selecionado');
-      hipopotamoImg.style.display = 'none';
-    } else {
-      hipopotamoImg.classList.add('animal-selecionado');
-      elefanteImg.style.display = 'none';
-    }
-  
-    selecao.classList.add('fade-out');
-  
-    setTimeout(() => {
-      selecao.style.display = 'none';
-      btnVoltar.classList.remove('escondido');
-  
-      if (animal === 'hipopotamo') {
-        container.innerHTML = `
-          <h2>Alimentação do Hipopótamo</h2>
-          <form id="form-hipopotamo" class="formulario-animal">
-            <div class="grupo">
-              <h3>Ração de Cavalo</h3>
-              <input type="number" id="racao" placeholder="kg consumido">
-            </div>
-      
-            <div class="grupo">
-              <h3>Frutas</h3>
-              <input type="number" id="manga" placeholder="Manga (kg)">
-              <input type="number" id="melancia" placeholder="Melancia (kg)">
-              <input type="number" id="banana" placeholder="Banana (kg)">
-            </div>
-      
-            <div class="grupo">
-              <h3>Verduras</h3>
-              <input type="number" id="capim" placeholder="Capim (kg)">
-              <input type="number" id="couve" placeholder="Couve (kg)">
-              <input type="number" id="alface" placeholder="Alface (kg)">
-            </div>
-      
-            <button type="button" onclick="analisarHipopotamo()">Analisar Alimentação</button>
-          </form>
-          <div id="resultado" class="resultado"></div>
-        `;
-      } else if (animal === 'elefante') {
-        container.innerHTML = `
-          <h2>Alimentação do Elefante</h2>
-          <form id="form-elefante" class="formulario-animal">
-            <div class="grupo">
-              <h3>Ração de Cavalo</h3>
-              <input type="number" id="racao" placeholder="kg consumido">
-            </div>
-      
-            <div class="grupo">
-              <h3>Frutas</h3>
-              <input type="number" id="manga" placeholder="Manga (kg)">
-              <input type="number" id="melancia" placeholder="Melancia (kg)">
-              <input type="number" id="banana" placeholder="Banana (kg)">
-            </div>
-      
-            <div class="grupo">
-              <h3>Leguminosas</h3>
-              <input type="number" id="feijao" placeholder="Feijão (kg)">
-            </div>
-      
-            <div class="grupo">
-              <h3>Gramíneas</h3>
-              <input type="number" id="capim" placeholder="Capim (kg)">
-              <input type="number" id="feno" placeholder="Feno (kg)">
-            </div>
-      
-            <button type="button" onclick="analisarElefante()">Analisar Alimentação</button>
-          </form>
-          <div id="resultado" class="resultado"></div>
-        `;
-      }      
-  
-      container.classList.remove('escondido');
-    }, 500);
-  }    
+function trocarConteudo(componenteAntigo, componenteNovo) {
+  componenteAntigo.classList.add('fade-out');
 
-  function voltarParaSelecao() {
-    const selecao = document.querySelector('.animal-selection');
-    const btnVoltar = document.getElementById('voltar-btn');
-    const container = document.getElementById('formulario-alimentacao');
-    const topo = document.getElementById('topo-logo');
+  setTimeout(() => {
+    componenteAntigo.classList.add('hidden');
+    componenteAntigo.classList.remove('fade-out');
+
+    componenteNovo.classList.remove('hidden');
+    // NÃO adiciona mais nenhuma animação aqui
+    // A animação de entrada (slide-fade-in) é aplicada diretamente em quem precisa
+  }, 500);
+}
+
+function selecionarAnimal(animal) {
+  const selecao = document.getElementById('selecao-animais');
+  const btnVoltar = document.getElementById('voltar-btn');
+  const container = document.getElementById('formulario-alimentacao');
+  const topo = document.getElementById('topo-logo');
+
+  // Oculta o topo e os animais
+  topo.classList.add('hidden');
+  document.getElementById('elefante-img').style.display = 'none';
+  document.getElementById('hipopotamo-img').style.display = 'none';
+
+  trocarConteudo(selecao, container);
+  btnVoltar.classList.remove('hidden');
+
+  // Define o conteúdo com base no animal
+  if (animal === 'hipopotamo') {
+    container.innerHTML = `
+      <h2>Alimentação do Hipopótamo</h2>
+      <form id="form-hipopotamo" class="formulario-animal">
+        <div class="grupo">
+          <h3>Ração de Cavalo</h3>
+          <input type="number" id="racao" placeholder="kg consumido">
+        </div>
+        <div class="grupo">
+          <h3>Frutas</h3>
+          <input type="number" id="manga" placeholder="Manga (kg)">
+          <input type="number" id="melancia" placeholder="Melancia (kg)">
+          <input type="number" id="banana" placeholder="Banana (kg)">
+        </div>
+        <div class="grupo">
+          <h3>Verduras</h3>
+          <input type="number" id="capim" placeholder="Capim (kg)">
+          <input type="number" id="couve" placeholder="Couve (kg)">
+          <input type="number" id="alface" placeholder="Alface (kg)">
+        </div>
+        <button type="button" id="btn-analisar" onclick="analisarHipopotamo()">Analisar Alimentação</button>
+      </form>
+      <div id="resultado" class="resultado"></div>
+    `;
+  } else if (animal === 'elefante') {
+    container.innerHTML = `
+      <h2>Alimentação do Elefante</h2>
+      <form id="form-elefante" class="formulario-animal">
+        <div class="grupo">
+          <h3>Ração de Cavalo</h3>
+          <input type="number" id="racao" placeholder="kg consumido">
+        </div>
+        <div class="grupo">
+          <h3>Frutas</h3>
+          <input type="number" id="manga" placeholder="Manga (kg)">
+          <input type="number" id="melancia" placeholder="Melancia (kg)">
+          <input type="number" id="banana" placeholder="Banana (kg)">
+        </div>
+        <div class="grupo">
+          <h3>Leguminosas</h3>
+          <input type="number" id="feijao" placeholder="Feijão (kg)">
+        </div>
+        <div class="grupo">
+          <h3>Gramíneas</h3>
+          <input type="number" id="capim" placeholder="Capim (kg)">
+          <input type="number" id="feno" placeholder="Feno (kg)">
+        </div>
+        <button type="button" id="btn-analisar" onclick="analisarElefante()">Analisar Alimentação</button>
+      </form>
+      <div id="resultado" class="resultado"></div>
+    `;
+  }
+
+  // Animação em cascata dos grupos
+  setTimeout(() => {
+    const grupos = container.querySelectorAll('.grupo');
+    grupos.forEach((grupo, index) => {
+      grupo.classList.add('grupo-animado');
+      grupo.style.animationDelay = `${index * 0.2}s`;
+    });
+
+    // Anima também o botão final
+    const btn = container.querySelector('#btn-analisar');
+    if (btn) {
+      btn.classList.add('grupo-animado'); // reaproveitando a mesma animação
+      btn.style.animationDelay = `${grupos.length * 0.2}s`;
+    }
+  }, 50);
+}
+
+function voltarParaSelecao() {
+  const selecao = document.getElementById('selecao-animais');
+  const btnVoltar = document.getElementById('voltar-btn');
+  const container = document.getElementById('formulario-alimentacao');
+  const topo = document.getElementById('topo-logo');
+
+  // Volta com o topo
+  topo.classList.remove('hidden');
+
+  // Traz de volta os animais
+  const elefanteImg = document.getElementById('elefante-img');
+  const hipopotamoImg = document.getElementById('hipopotamo-img');
+
+  elefanteImg.style.display = 'inline-block';
+  hipopotamoImg.style.display = 'inline-block';
+
+  elefanteImg.classList.remove('animal-selecionado');
+  hipopotamoImg.classList.remove('animal-selecionado');
+
+  // Troca visual de volta para seleção
+  trocarConteudo(container, selecao);
+  btnVoltar.classList.add('hidden');
+
+  // Limpa conteúdo anterior
+  container.innerHTML = '';
+
+  // Aplica animação nos animais com leve delay
+  setTimeout(() => {
+    elefanteImg.classList.add('animal-animado');
+    hipopotamoImg.classList.add('animal-animado');
+    elefanteImg.style.animationDelay = '0.1s';
+    hipopotamoImg.style.animationDelay = '0.3s';
+
+    // Remove a classe depois para permitir reanimação futura
+    setTimeout(() => {
+      elefanteImg.classList.remove('animal-animado');
+      hipopotamoImg.classList.remove('animal-animado');
+      elefanteImg.style.animationDelay = '';
+      hipopotamoImg.style.animationDelay = '';
+    }, 1000);
+  }, 100);
+}
   
-    // Volta a exibir a logo e a seleção
-    topo.classList.remove('escondido');
-    selecao.style.display = 'flex';
-    selecao.classList.remove('fade-out');
-    btnVoltar.classList.add('escondido');
-    container.classList.add('escondido');
-    container.innerHTML = '';
-  
-    // Limpa estado das imagens
-    document.getElementById('elefante-img').classList.remove('animal-selecionado');
-    document.getElementById('hipopotamo-img').classList.remove('animal-selecionado');
-    document.getElementById('elefante-img').style.display = 'inline';
-    document.getElementById('hipopotamo-img').style.display = 'inline';
-  }  
-  
-  function analisarHipopotamo() {
-    const valores = {
-      racao: parseFloat(document.getElementById('racao').value) || 0,
-      manga: parseFloat(document.getElementById('manga').value) || 0,
-      melancia: parseFloat(document.getElementById('melancia').value) || 0,
-      banana: parseFloat(document.getElementById('banana').value) || 0,
-      capim: parseFloat(document.getElementById('capim').value) || 0,
-      couve: parseFloat(document.getElementById('couve').value) || 0,
-      alface: parseFloat(document.getElementById('alface').value) || 0,
-    };
-  
-    const totais = {
-      frutas: valores.manga + valores.melancia + valores.banana,
-      verduras: valores.capim + valores.couve + valores.alface,
-      racao: valores.racao
-    };
-  
-    const ideais = {
-      racao: 49.5,
-      manga: 38.72,
-      melancia: 38.72,
-      banana: 38.72,
-      capim: 73.92,
-      couve: 73.92,
-      alface: 73.92
-    };
-  
-    const resultadoContainer = document.getElementById('formulario-alimentacao');
-    resultadoContainer.innerHTML = `
-      <h2>Resultado da Avaliação: Hipopótamo</h2>
-      <div class="resultado">
-        <ul id="avaliacao-hipopotamo"></ul>
+function analisarHipopotamo() {
+  const valores = {
+    racao: parseFloat(document.getElementById('racao').value) || 0,
+    manga: parseFloat(document.getElementById('manga').value) || 0,
+    melancia: parseFloat(document.getElementById('melancia').value) || 0,
+    banana: parseFloat(document.getElementById('banana').value) || 0,
+    capim: parseFloat(document.getElementById('capim').value) || 0,
+    couve: parseFloat(document.getElementById('couve').value) || 0,
+    alface: parseFloat(document.getElementById('alface').value) || 0,
+  };
+
+  const totais = {
+    frutas: valores.manga + valores.melancia + valores.banana,
+    verduras: valores.capim + valores.couve + valores.alface,
+    racao: valores.racao
+  };
+
+  const ideais = {
+    racao: 49.5,
+    manga: 38.72,
+    melancia: 38.72,
+    banana: 38.72,
+    capim: 73.92,
+    couve: 73.92,
+    alface: 73.92
+  };
+
+  const resultadoContainer = document.getElementById('formulario-alimentacao');
+  resultadoContainer.innerHTML = `
+    <div class="resultado-container">
+      <h2 class="resultado-titulo">Resultado da Avaliação: Hipopótamo</h2>
+
+      <div class="resultado-conteudo">
+        <div class="resultado">
+          <ul id="avaliacao-hipopotamo"></ul>
+        </div>
+
+        <div class="grafico-area">
+          <canvas id="grafico-hipopotamo" width="300" height="300"></canvas>
+        </div>
       </div>
-      <canvas id="grafico-hipopotamo" width="300" height="300"></canvas>
+
       <div class="botoes-analise">
         <button onclick="voltarParaSelecao()">🔙 Voltar</button>
         <button onclick="refazerAnaliseHipopotamo()">✏️ Alterar Valores</button>
       </div>
-    `;
-  
-    const ul = document.getElementById('avaliacao-hipopotamo');
-  
-    for (let item in valores) {
-      const consumido = valores[item];
-      const ideal = ideais[item];
-      const diff = consumido - ideal;
-  
-      let classe = '';
-      let mensagem = '';
-  
-      if (diff >= -5 && diff <= 5) {
-        classe = 'ok';
-        mensagem = `✔ Quantidade ideal (${consumido.toFixed(2)} kg)`;
-      } else if (diff < -5) {
-        classe = 'baixo';
-        mensagem = `⚠ Está comendo pouco (${Math.abs(diff.toFixed(2))} kg a menos - ${consumido.toFixed(2)} kg)`;
-      } else {
-        classe = 'alto';
-        mensagem = `⛔ Está comendo demais (${diff.toFixed(2)} kg a mais - ${consumido.toFixed(2)} kg)`;
-      }
-  
-      const li = document.createElement('li');
-      li.className = classe;
-      li.textContent = `${formatarNome(item)}: ${mensagem}`;
-      ul.appendChild(li);
+    </div>
+  `;
+
+  const ul = document.getElementById('avaliacao-hipopotamo');
+  let index = 0;
+
+  for (let item in valores) {
+    const consumido = valores[item];
+    const ideal = ideais[item];
+    const diff = consumido - ideal;
+
+    let classe = '';
+    let mensagem = '';
+
+    if (diff >= -5 && diff <= 5) {
+      classe = 'ok';
+      mensagem = `✔ Quantidade ideal (${consumido.toFixed(2)} kg)`;
+    } else if (diff < -5) {
+      classe = 'baixo';
+      mensagem = `⚠ Está comendo pouco (${Math.abs(diff.toFixed(2))} kg a menos - ${consumido.toFixed(2)} kg)`;
+    } else {
+      classe = 'alto';
+      mensagem = `⛔ Está comendo demais (${diff.toFixed(2)} kg a mais - ${consumido.toFixed(2)} kg)`;
     }
-  
-    gerarGraficoHipopotamo(totais);
+
+    const li = document.createElement('li');
+    li.className = `resultado-item ${classe}`;
+    li.textContent = `${formatarNome(item)}: ${mensagem}`;
+    li.style.animationDelay = `${index * 0.2}s`;
+    ul.appendChild(li);
+    index++;
   }
+
+  requestAnimationFrame(() => {
+    const canvas = document.getElementById('grafico-hipopotamo');
+    if (canvas) {
+      gerarGraficoHipopotamo(totais);
+    }
+  });
+}
 
   function refazerAnaliseHipopotamo() {
     selecionarAnimal('hipopotamo');
@@ -259,19 +307,29 @@ function selecionarAnimal(animal) {
   
     const resultadoContainer = document.getElementById('formulario-alimentacao');
     resultadoContainer.innerHTML = `
-    <h2>Resultado da Avaliação: Elefante</h2>
-    <div class="resultado">
-        <ul id="avaliacao-elefante"></ul>
-    </div>
-    <canvas id="grafico-elefante"></canvas>
-    <div class="botoes-analise">
+    <div class="resultado-container">
+      <h2 class="resultado-titulo">Resultado da Avaliação: Elefante</h2>
+
+      <div class="resultado-conteudo">
+        <div class="resultado">
+          <ul id="avaliacao-elefante"></ul>
+        </div>
+
+        <div class="grafico-area">
+          <canvas id="grafico-elefante" width="300" height="300"></canvas>
+        </div>
+      </div>
+
+      <div class="botoes-analise">
         <button onclick="voltarParaSelecao()">🔙 Voltar</button>
         <button onclick="refazerAnaliseElefante()">✏️ Alterar Valores</button>
+      </div>
     </div>
-    `;
+  `;
   
     const ul = document.getElementById('avaliacao-elefante');
   
+    let index = 0;
     for (let item in valores) {
       const consumido = valores[item];
       const ideal = ideais[item];
@@ -292,21 +350,20 @@ function selecionarAnimal(animal) {
       }
   
       const li = document.createElement('li');
-      li.className = classe;
+      li.className = `resultado-item ${classe}`;
       li.textContent = `${formatarNome(item)}: ${mensagem}`;
+      li.style.animationDelay = `${index * 0.2}s`;
       ul.appendChild(li);
+      index++;
     }
   
     requestAnimationFrame(() => {
-        const canvas = document.getElementById('grafico-elefante');
-        if (canvas) {
-          gerarGraficoElefante(totais);
-        } else {
-          console.warn("Canvas do elefante não encontrado!");
-        }
-      });      
-      
-  }  
+      const canvas = document.getElementById('grafico-elefante');
+      if (canvas) {
+        gerarGraficoElefante(totais);
+      }
+    });
+  }
   
   function refazerAnaliseElefante() {
     selecionarAnimal('elefante');
