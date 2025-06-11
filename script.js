@@ -17,7 +17,6 @@ function selecionarAnimal(animal) {
   const container = document.getElementById('formulario-alimentacao');
   const topo = document.getElementById('topo-logo');
 
-  // Oculta o topo e os animais
   topo.classList.add('hidden');
   document.getElementById('elefante-img').style.display = 'none';
   document.getElementById('hipopotamo-img').style.display = 'none';
@@ -25,61 +24,34 @@ function selecionarAnimal(animal) {
   trocarConteudo(selecao, container);
   btnVoltar.classList.remove('hidden');
 
-  // Define o conteúdo com base no animal
-  if (animal === 'hipopotamo') {
-    container.innerHTML = `
-      <h2>Alimentação do Hipopótamo</h2>
-      <form id="form-hipopotamo" class="formulario-animal">
-        <div class="grupo">
-          <h3>Ração de Cavalo</h3>
-          <input type="number" id="racao" placeholder="kg consumido">
-        </div>
-        <div class="grupo">
-          <h3>Frutas</h3>
-          <input type="number" id="manga" placeholder="Manga (kg)">
-          <input type="number" id="melancia" placeholder="Melancia (kg)">
-          <input type="number" id="banana" placeholder="Banana (kg)">
-        </div>
-        <div class="grupo">
-          <h3>Verduras</h3>
-          <input type="number" id="capim" placeholder="Capim (kg)">
-          <input type="number" id="couve" placeholder="Couve (kg)">
-          <input type="number" id="alface" placeholder="Alface (kg)">
-        </div>
-        <button type="button" id="btn-analisar" onclick="analisarHipopotamo()">Analisar Alimentação</button>
-      </form>
-      <div id="resultado" class="resultado"></div>
-    `;
-  } else if (animal === 'elefante') {
-    container.innerHTML = `
-      <h2>Alimentação do Elefante</h2>
-      <form id="form-elefante" class="formulario-animal">
-        <div class="grupo">
-          <h3>Ração de Cavalo</h3>
-          <input type="number" id="racao" placeholder="kg consumido">
-        </div>
-        <div class="grupo">
-          <h3>Frutas</h3>
-          <input type="number" id="manga" placeholder="Manga (kg)">
-          <input type="number" id="melancia" placeholder="Melancia (kg)">
-          <input type="number" id="banana" placeholder="Banana (kg)">
-        </div>
-        <div class="grupo">
-          <h3>Leguminosas</h3>
-          <input type="number" id="feijao" placeholder="Feijão (kg)">
-        </div>
-        <div class="grupo">
-          <h3>Gramíneas</h3>
-          <input type="number" id="capim" placeholder="Capim (kg)">
-          <input type="number" id="feno" placeholder="Feno (kg)">
-        </div>
-        <button type="button" id="btn-analisar" onclick="analisarElefante()">Analisar Alimentação</button>
-      </form>
-      <div id="resultado" class="resultado"></div>
-    `;
-  }
+  // NOVO FORMULÁRIO COM 3 INPUTS
+  const titulo = animal === 'hipopotamo' ? 'Hipopótamo' : 'Elefante';
+  const analisarFn = animal === 'hipopotamo' ? 'analisarHipopotamo()' : 'analisarElefante()';
 
-  // Animação em cascata dos grupos
+  container.innerHTML = `
+    <h2>Alimentação do ${titulo}</h2>
+    <form id="form-${animal}" class="formulario-animal">
+      <div class="grupo">
+        <h3>Forragem (feno de capim)</h3>
+        <input type="number" id="forragem" placeholder="kg consumido">
+      </div>
+      <div class="grupo">
+        <h3>Leguminosa (feno de alfafa)</h3>
+        <input type="number" id="leguminosa" placeholder="kg consumido">
+      </div>
+      <div class="grupo">
+        <h3>Ração</h3>
+        <input type="number" id="racao" placeholder="kg consumido">
+      </div>
+
+      <div class="botoes-analise">
+        <button type="button" id="btn-analisar" onclick="${analisarFn}">Analisar Alimentação</button>
+      </div>
+    </form>
+    <p class="informativo-sal">🧂 Sal à vontade (não contabilizado)</p>
+  `;
+
+  // animação dos blocos
   setTimeout(() => {
     const grupos = container.querySelectorAll('.grupo');
     grupos.forEach((grupo, index) => {
@@ -87,10 +59,9 @@ function selecionarAnimal(animal) {
       grupo.style.animationDelay = `${index * 0.2}s`;
     });
 
-    // Anima também o botão final
     const btn = container.querySelector('#btn-analisar');
     if (btn) {
-      btn.classList.add('grupo-animado'); // reaproveitando a mesma animação
+      btn.classList.add('grupo-animado');
       btn.style.animationDelay = `${grupos.length * 0.2}s`;
     }
   }, 50);
@@ -101,6 +72,13 @@ function voltarParaSelecao() {
   const btnVoltar = document.getElementById('voltar-btn');
   const container = document.getElementById('formulario-alimentacao');
   const topo = document.getElementById('topo-logo');
+  const referencias = document.getElementById('referencias-container');
+
+  // Oculta e limpa as referências, se visíveis
+  if (referencias) {
+    referencias.classList.add('hidden');
+    referencias.innerHTML = '';
+  }
 
   // Volta com o topo
   topo.classList.remove('hidden');
@@ -141,55 +119,32 @@ function voltarParaSelecao() {
   
 function analisarHipopotamo() {
   const valores = {
+    forragem: parseFloat(document.getElementById('forragem').value) || 0,
+    leguminosa: parseFloat(document.getElementById('leguminosa').value) || 0,
     racao: parseFloat(document.getElementById('racao').value) || 0,
-    manga: parseFloat(document.getElementById('manga').value) || 0,
-    melancia: parseFloat(document.getElementById('melancia').value) || 0,
-    banana: parseFloat(document.getElementById('banana').value) || 0,
-    capim: parseFloat(document.getElementById('capim').value) || 0,
-    couve: parseFloat(document.getElementById('couve').value) || 0,
-    alface: parseFloat(document.getElementById('alface').value) || 0,
-  };
-
-  const totais = {
-    frutas: valores.manga + valores.melancia + valores.banana,
-    verduras: valores.capim + valores.couve + valores.alface,
-    racao: valores.racao
   };
 
   const ideais = {
-    racao: 49.5,
-    manga: 38.72,
-    melancia: 38.72,
-    banana: 38.72,
-    capim: 73.92,
-    couve: 73.92,
-    alface: 73.92
+    forragem: 99,
+    leguminosa: 13,
+    racao: 19
   };
 
   const resultadoContainer = document.getElementById('formulario-alimentacao');
   resultadoContainer.innerHTML = `
-    <div class="resultado-container">
-      <h2 class="resultado-titulo">Resultado da Avaliação: Hipopótamo</h2>
-
-      <div class="resultado-conteudo">
-        <div class="resultado">
-          <ul id="avaliacao-hipopotamo"></ul>
-        </div>
-
-        <div class="grafico-area">
-          <canvas id="grafico-hipopotamo" width="300" height="300"></canvas>
-        </div>
-      </div>
-
-      <div class="botoes-analise">
-        <button onclick="voltarParaSelecao()">🔙 Voltar</button>
-        <button onclick="refazerAnaliseHipopotamo()">✏️ Alterar Valores</button>
-      </div>
+    <h2>Resultado da Avaliação: Hipopótamo</h2>
+    <div class="resultado">
+      <ul id="avaliacao-hipopotamo"></ul>
     </div>
+    <canvas id="grafico-hipopotamo"></canvas>
+    <div class="botoes-analise">
+      <button onclick="voltarParaSelecao()">🔙 Voltar</button>
+      <button onclick="selecionarAnimal('hipopotamo')">✏️ Alterar Valores</button>
+    </div>
+    <p class="informativo-sal">🧂 Sal à vontade (não contabilizado)</p>
   `;
 
   const ul = document.getElementById('avaliacao-hipopotamo');
-  let index = 0;
 
   for (let item in valores) {
     const consumido = valores[item];
@@ -199,31 +154,24 @@ function analisarHipopotamo() {
     let classe = '';
     let mensagem = '';
 
-    if (diff >= -5 && diff <= 5) {
+    if (diff >= -2 && diff <= 2) {
       classe = 'ok';
-      mensagem = `✔ Quantidade ideal (${consumido.toFixed(2)} kg)`;
-    } else if (diff < -5) {
+      mensagem = `✅ Quantidade adequada (${consumido.toFixed(2)} kg)`;
+    } else if (diff < -2) {
       classe = 'baixo';
-      mensagem = `⚠ Está comendo pouco (${Math.abs(diff.toFixed(2))} kg a menos - ${consumido.toFixed(2)} kg)`;
+      mensagem = `⚠️ Quantidade insuficiente (${Math.abs(diff.toFixed(2))} kg a menos - ${consumido.toFixed(2)} kg)`;
     } else {
       classe = 'alto';
-      mensagem = `⛔ Está comendo demais (${diff.toFixed(2)} kg a mais - ${consumido.toFixed(2)} kg)`;
+      mensagem = `⛔ Quantidade excessiva (${diff.toFixed(2)} kg a mais - ${consumido.toFixed(2)} kg)`;
     }
 
     const li = document.createElement('li');
     li.className = `resultado-item ${classe}`;
     li.textContent = `${formatarNome(item)}: ${mensagem}`;
-    li.style.animationDelay = `${index * 0.2}s`;
     ul.appendChild(li);
-    index++;
   }
 
-  requestAnimationFrame(() => {
-    const canvas = document.getElementById('grafico-hipopotamo');
-    if (canvas) {
-      gerarGraficoHipopotamo(totais);
-    }
-  });
+  gerarGraficoHipopotamo(valores);
 }
 
   function refazerAnaliseHipopotamo() {
@@ -231,36 +179,34 @@ function analisarHipopotamo() {
   }
     
   function gerarGraficoHipopotamo(valores) {
-    const ctx = document.getElementById('grafico-hipopotamo').getContext('2d');
-    new Chart(ctx, {
-      type: 'pie',
-      data: {
-        labels: ['Frutas', 'Verduras', 'Ração'],
-        datasets: [{
-          data: [
-            valores.frutas,
-            valores.verduras,
-            valores.racao
-          ],
-          backgroundColor: ['#FFB347', '#4CAF50', '#09324B'],
-          borderColor: '#0f3d21',
-          borderWidth: 2
-        }]
-      },
-      options: {
-        plugins: {
-          legend: {
-            labels: {
-              color: '#FFD700',
-              font: {
-                size: 14
-              }
-            }
+  const ctx = document.getElementById('grafico-hipopotamo').getContext('2d');
+  new Chart(ctx, {
+    type: 'pie',
+    data: {
+      labels: ['Forragem', 'Leguminosa', 'Ração'],
+      datasets: [{
+        data: [
+          valores.forragem,
+          valores.leguminosa,
+          valores.racao
+        ],
+        backgroundColor: ['#4CAF50', '#FFA500', '#09324B'],
+        borderColor: '#0f3d21',
+        borderWidth: 2
+      }]
+    },
+    options: {
+      plugins: {
+        legend: {
+          labels: {
+            color: '#FFD700',
+            font: { size: 14 }
           }
         }
       }
-    });
-  }  
+    }
+  });
+}
   
   function formatarNome(item) {
     switch(item) {
@@ -278,127 +224,150 @@ function analisarHipopotamo() {
   }  
 
   function analisarElefante() {
-    const valores = {
-      racao: parseFloat(document.getElementById('racao').value) || 0,
-      manga: parseFloat(document.getElementById('manga').value) || 0,
-      melancia: parseFloat(document.getElementById('melancia').value) || 0,
-      banana: parseFloat(document.getElementById('banana').value) || 0,
-      feijao: parseFloat(document.getElementById('feijao').value) || 0,
-      capim: parseFloat(document.getElementById('capim').value) || 0,
-      feno: parseFloat(document.getElementById('feno').value) || 0,
-    };
-  
-    const totais = {
-      frutas: valores.manga + valores.melancia + valores.banana,
-      leguminosas: valores.feijao,
-      gramineas: valores.capim + valores.feno,
-      racao: valores.racao,
-    };
-  
-    const ideais = {
-      racao: 16,
-      manga: 13.33,
-      melancia: 13.33,
-      banana: 13.33,
-      feijao: 24,
-      capim: 60,
-      feno: 60
-    };
-  
-    const resultadoContainer = document.getElementById('formulario-alimentacao');
-    resultadoContainer.innerHTML = `
-    <div class="resultado-container">
-      <h2 class="resultado-titulo">Resultado da Avaliação: Elefante</h2>
+  const valores = {
+    forragem: parseFloat(document.getElementById('forragem').value) || 0,
+    leguminosa: parseFloat(document.getElementById('leguminosa').value) || 0,
+    racao: parseFloat(document.getElementById('racao').value) || 0,
+  };
 
-      <div class="resultado-conteudo">
-        <div class="resultado">
-          <ul id="avaliacao-elefante"></ul>
-        </div>
+  const ideais = {
+    forragem: 92,
+    leguminosa: 29,
+    racao: 10
+  };
 
-        <div class="grafico-area">
-          <canvas id="grafico-elefante" width="300" height="300"></canvas>
-        </div>
-      </div>
-
-      <div class="botoes-analise">
-        <button onclick="voltarParaSelecao()">🔙 Voltar</button>
-        <button onclick="refazerAnaliseElefante()">✏️ Alterar Valores</button>
-      </div>
+  const resultadoContainer = document.getElementById('formulario-alimentacao');
+  resultadoContainer.innerHTML = `
+    <h2>Resultado da Avaliação: Elefante</h2>
+    <div class="resultado">
+      <ul id="avaliacao-elefante"></ul>
     </div>
+    <canvas id="grafico-elefante"></canvas>
+    <div class="botoes-analise">
+      <button onclick="voltarParaSelecao()">🔙 Voltar</button>
+      <button onclick="selecionarAnimal('elefante')">✏️ Alterar Valores</button>
+    </div>
+    <p class="informativo-sal">🧂 Sal à vontade (não contabilizado)</p>
   `;
-  
-    const ul = document.getElementById('avaliacao-elefante');
-  
-    let index = 0;
-    for (let item in valores) {
-      const consumido = valores[item];
-      const ideal = ideais[item];
-      const diff = consumido - ideal;
-  
-      let classe = '';
-      let mensagem = '';
-  
-      if (diff >= -5 && diff <= 5) {
-        classe = 'ok';
-        mensagem = `✔ Quantidade ideal (${consumido.toFixed(2)} kg)`;
-      } else if (diff < -5) {
-        classe = 'baixo';
-        mensagem = `⚠ Está comendo pouco (${Math.abs(diff.toFixed(2))} kg a menos - ${consumido.toFixed(2)} kg)`;
-      } else {
-        classe = 'alto';
-        mensagem = `⛔ Está comendo demais (${diff.toFixed(2)} kg a mais - ${consumido.toFixed(2)} kg)`;
-      }
-  
-      const li = document.createElement('li');
-      li.className = `resultado-item ${classe}`;
-      li.textContent = `${formatarNome(item)}: ${mensagem}`;
-      li.style.animationDelay = `${index * 0.2}s`;
-      ul.appendChild(li);
-      index++;
+
+  const ul = document.getElementById('avaliacao-elefante');
+
+  for (let item in valores) {
+    const consumido = valores[item];
+    const ideal = ideais[item];
+    const diff = consumido - ideal;
+
+    let classe = '';
+    let mensagem = '';
+
+    if (diff >= -2 && diff <= 2) {
+      classe = 'ok';
+      mensagem = `✅ Quantidade adequada (${consumido.toFixed(2)} kg)`;
+    } else if (diff < -2) {
+      classe = 'baixo';
+      mensagem = `⚠️ Quantidade insuficiente (${Math.abs(diff.toFixed(2))} kg a menos - ${consumido.toFixed(2)} kg)`;
+    } else {
+      classe = 'alto';
+      mensagem = `⛔ Quantidade excessiva (${diff.toFixed(2)} kg a mais - ${consumido.toFixed(2)} kg)`;
     }
-  
-    requestAnimationFrame(() => {
-      const canvas = document.getElementById('grafico-elefante');
-      if (canvas) {
-        gerarGraficoElefante(totais);
-      }
-    });
+
+    const li = document.createElement('li');
+    li.className = `resultado-item ${classe}`;
+    li.textContent = `${formatarNome(item)}: ${mensagem}`;
+    ul.appendChild(li);
   }
+
+  gerarGraficoElefante(valores);
+}
   
   function refazerAnaliseElefante() {
     selecionarAnimal('elefante');
   }
   
   function gerarGraficoElefante(valores) {
-    const ctx = document.getElementById('grafico-elefante')?.getContext('2d');
-    new Chart(ctx, {
-      type: 'pie',
-      data: {
-        labels: ['Frutas', 'Leguminosas', 'Gramíneas', 'Ração'],
-        datasets: [{
-          data: [
-            valores.frutas,
-            valores.leguminosas,
-            valores.gramineas,
-            valores.racao
-          ],
-          backgroundColor: ['#FFB347', '#D97D54', '#1d5a30', '#09324B'],
-          borderColor: '#0f3d21',
-          borderWidth: 2
-        }]
-      },
-      options: {
-        plugins: {
-          legend: {
-            labels: {
-              color: '#FFD700',
-              font: {
-                size: 14
-              }
-            }
+  const ctx = document.getElementById('grafico-elefante').getContext('2d');
+  new Chart(ctx, {
+    type: 'pie',
+    data: {
+      labels: ['Forragem', 'Leguminosa', 'Ração'],
+      datasets: [{
+        data: [
+          valores.forragem,
+          valores.leguminosa,
+          valores.racao
+        ],
+        backgroundColor: ['#4CAF50', '#FFA500', '#09324B'],
+        borderColor: '#0f3d21',
+        borderWidth: 2
+      }]
+    },
+    options: {
+      plugins: {
+        legend: {
+          labels: {
+            color: '#FFD700',
+            font: { size: 14 }
           }
         }
       }
-    });
-  }  
+    }
+  });
+}
+
+function exibirReferencias() {
+  const topo = document.getElementById('topo-logo');
+  const selecao = document.getElementById('selecao-animais');
+  const container = document.getElementById('referencias-container');
+  const btnVoltar = document.getElementById('voltar-btn');
+
+  // Esconde logo e seleção
+  topo.classList.add('hidden');
+  selecao.classList.add('hidden');
+
+  // Mostra botão de voltar e container
+  btnVoltar.classList.remove('hidden');
+  container.classList.remove('hidden');
+
+  // Insere conteúdo
+  container.innerHTML = `
+    <div class="referencias-bloco">
+      <h2>📘 Referências Nutricionais</h2>
+
+      <p><strong>Hipopótamo (≈132kg):</strong></p>
+      <ul>
+        <li>Forragem (feno de capim): ≈99 kg</li>
+        <li>Leguminosa (feno de alfafa): ≈13 kg</li>
+        <li>Ração: ≈19 kg</li>
+        <li>Sal à vontade</li>
+      </ul>
+
+      <p><strong>Elefante (≈100kg):</strong></p>
+      <ul>
+        <li>Forragem (feno de capim): ≈92 kg</li>
+        <li>Leguminosa (feno de alfafa): ≈29 kg</li>
+        <li>Ração: ≈10 kg</li>
+        <li>Sal à vontade</li>
+      </ul>
+
+      <h3>📚 Fontes consultadas:</h3>
+      <p><strong>Elefante:</strong></p>
+      <ul>
+        <li>Mellor, D. J., Hunt, S. & Gusset, M. (2015). <em>Caring for Wildlife: The World Zoo and Aquarium Animal Welfare Strategy</em>. WAZA Executive Office.</li>
+        <li>Olson, D. (2011). <em>Elephant Husbandry Resource Guide</em>. AZA Elephant Taxon Group.</li>
+        <li>Bolechova, P. et al. (2023). <em>EAZA Best Practice Guidelines for Elephants - Second Edition</em>. European Association of Zoos and Aquariums.</li>
+      </ul>
+
+      <p><strong>Hipopótamo:</strong></p>
+      <ul>
+        <li>Houwald, F. et al. (2020). <em>EAZA Best Practice Guidelines for the Pygmy Hippopotamus</em>. EAZA.</li>
+        <li>Altrak, G. (2012). <em>Nutrição e Manejo de Animais Silvestres e Exóticos em Zoológicos</em>. Florianópolis.</li>
+      </ul>
+
+      <p><em>Todos os dados são estimativas fornecidas pelo grupo de Medicina Veterinária da UNI BH para fins de simulação didática.</em></p>
+    </div>
+  `;
+}
+
+
+
   

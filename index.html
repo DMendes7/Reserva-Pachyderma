@@ -12,7 +12,9 @@
     <img src="img/logo.png" alt="Logo Reserva Pachyderma" class="logo">
   </header>
   
+  <!-- Botões no topo -->
   <button id="voltar-btn" class="hidden" onclick="voltarParaSelecao()">⟵ Voltar</button>
+  <button id="referencias-btn" onclick="exibirReferencias()">📘 Referências</button>
 
   <main>
     <!-- Seleção dos animais -->
@@ -24,6 +26,11 @@
     <!-- Formulário de alimentação (aparece após seleção) -->
     <div id="formulario-alimentacao" class="hidden">
       <!-- Conteúdo gerado dinamicamente via JS -->
+    </div>
+
+    <!-- Referências (aparece ao clicar no botão) -->
+    <div id="referencias-container" class="hidden">
+      <!-- Conteúdo gerado via JS -->
     </div>
   </main>
 
